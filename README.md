@@ -1,10 +1,10 @@
-# FleetTrack V2
+# FleetTrack
 
-FleetTrack V2 is a full-stack fleet operations command center built for logistics teams that need one place to monitor vehicles, drivers, orders, maintenance, and live shipment movement. It combines a React dashboard with a tenant-aware Express + MongoDB backend and real-time Socket.IO updates, so the product feels demo-ready for a hackathon while still following a production-shaped architecture.
+FleetTrack is a full-stack fleet operations command center built for logistics teams that need one place to monitor vehicles, drivers, orders, maintenance, and live shipment movement. It combines a React dashboard with a tenant-aware Express + MongoDB backend and real-time Socket.IO updates, so the product feels demo-ready for a hackathon while still following a production-shaped architecture.
 
 ## Project Purpose
 
-Most fleet workflows break across too many tools: one screen for dispatch, another for driver status, another for maintenance, and no shared live view of what is happening on the road. FleetTrack V2 brings those workflows into a single workspace so operations teams can:
+Most fleet workflows break across too many tools: one screen for dispatch, another for driver status, another for maintenance, and no shared live view of what is happening on the road. FleetTrack brings those workflows into a single workspace so operations teams can:
 
 - track delivery movement in real time
 - manage fleet, driver, and order records from one dashboard
@@ -101,7 +101,7 @@ sequenceDiagram
 ## Folder Structure
 
 ```text
-fleet_track_v2/
+fleet_track/
 |-- src/
 |   |-- assets/                 Static demo assets
 |   |-- components/
@@ -180,4 +180,4 @@ Backend:
 
 ## Why This Project Stands Out
 
-FleetTrack V2 is not just a dashboard mockup. It demonstrates a realistic logistics architecture with secure auth, tenant separation, live socket events, database-backed modules, and a demo-friendly data seeding strategy. That makes it strong both as a hackathon showcase and as a foundation for a more production-ready fleet platform.
+FleetTrack is not just a dashboard mockup. It demonstrates a realistic logistics architecture with secure auth, tenant separation, live socket events, database-backed modules, and a demo-friendly data seeding strategy. That makes it strong both as a hackathon showcase and as a foundation for a more production-ready fleet platform.
