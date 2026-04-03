@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+server/node_modules/
+
+# Build output
+dist/
+server/dist/
+
+# Environment files
+.env
+.env.*
+server/.env
+server/.env.*
+fleet_track_v2_revenge/.env
+fleet_track_v2_revenge/.env.*
+fleet_track_v2_revenge/server/.env
+fleet_track_v2_revenge/server/.env.*
+!.env.example
+!server/.env.example
+!fleet_track_v2_revenge/.env.example
+!fleet_track_v2_revenge/server/.env.example
+
+# Logs and dump files
+*.log
+*.err
+*.out
+*.pid
+*.seed
+*.stackdump
+*.dump
+*.dmp
+
+# OS/editor artifacts
+.DS_Store
+._*
