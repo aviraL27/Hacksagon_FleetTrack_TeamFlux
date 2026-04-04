@@ -14,6 +14,7 @@ Most fleet workflows break across too many tools: one screen for dispatch, anoth
 ## What The Project Delivers
 
 - Tenant-scoped authentication with register, login, refresh-session, and logout flows
+- Secure forgot-password and reset-password flow using OTP over email with brute-force protections
 - Auto-seeded workspace data on registration for instant demo onboarding
 - Dashboard KPIs for fleet size, driver activity, dispatch progress, and maintenance alerts
 - Operational modules for fleet, drivers, orders, maintenance, and organization settings
@@ -98,42 +99,48 @@ sequenceDiagram
   C->>C: Update Zustand store, cards, and Leaflet map
 ```
 
+## Authentication Security Highlights
+
+- Multi-tenant auth checks every login against tenant slug plus user email/password.
+- Access tokens are short-lived, while refresh sessions are stored server-side and sent as HttpOnly cookies.
+- Forgot-password uses an anti-enumeration response (`If the account exists...`) to avoid leaking account existence.
+- Reset OTPs are random numeric codes, hashed with bcrypt in the database, and automatically expire via TTL index.
+- OTP verification enforces max-attempt lockout and invalidates previous unconsumed OTPs before issuing a new one.
+- Successful password reset revokes all active refresh sessions and clears auth cookies.
+
 ## Folder Structure
 
 ```text
-fleet_track_v2/
-|-- src/
-|   |-- assets/                 Static demo assets
-|   |-- components/
-|   |   `-- ui/                 Reusable UI building blocks
-|   |-- constants/              Shared frontend constants
-|   |-- context/                Theme and app-level providers
-|   |-- hooks/                  Reusable frontend hooks
-|   |-- layouts/                Auth and dashboard layout shells
-|   |-- pages/                  Dashboard, Fleet, Drivers, Orders, Tracking, Maintenance, Settings
-|   |-- routes/                 Route config and protected route logic
-|   |-- services/               API client, auth client, socket connector
-|   |-- store/                  Zustand stores and seeded demo data
-|   |-- utils/                  Client helpers
-|   |-- App.jsx                 Root app wrapper
-|   `-- main.jsx                Frontend entry point
-|-- server/
-|   |-- src/
-|   |   |-- config/             Environment configuration
-|   |   |-- db/                 MongoDB connection setup
-|   |   |-- middleware/         Auth and role guards
-|   |   |-- models/             Mongoose schemas
-|   |   |-- routes/             Auth, dashboard, fleet, driver, order, maintenance, settings APIs
-|   |   |-- services/           Auth, order logic, sockets, seed, serializers, activity logs
-|   |   |-- utils/              Backend helpers
-|   |   |-- app.js              Express app wiring
-|   |   `-- index.js            HTTP server + Socket.IO bootstrap
-|   |-- .env.example
-|   `-- package.json
+root/
+|-- .env
+|-- index.html
+|-- netlify.toml
+|-- package.json
 |-- scripts/
-|   `-- dev.mjs                 Runs client and server together in development
-|-- .env.example                Frontend environment template
-|-- package.json                Frontend package manifest
+|   `-- dev.mjs
+|-- server/
+|   |-- .env
+|   |-- package.json
+|   `-- src/
+|       |-- app.js
+|       |-- index.js
+|       |-- config/
+|       |-- db/
+|       |-- middleware/
+|       |-- models/
+|       |-- routes/
+|       |-- services/
+|       `-- utils/
+|-- src/
+|   |-- components/
+|   |-- context/
+|   |-- hooks/
+|   |-- layouts/
+|   |-- pages/
+|   |-- routes/
+|   |-- services/
+|   |-- store/
+|   `-- utils/
 `-- README.md
 ```
 
@@ -144,10 +151,40 @@ npm install
 npm --prefix server install
 ```
 
-Create runtime env files from the provided examples:
+Create runtime env files manually:
 
-- `.env` from `.env.example`
-- `server/.env` from `server/.env.example`
+Client env at `root/.env`:
+
+```dotenv
+VITE_API_BASE_URL=http://localhost:4000/api
+VITE_SOCKET_URL=http://localhost:4000
+```
+
+Server env at `root/server/.env`:
+
+```dotenv
+NODE_ENV=development
+PORT=4000
+CLIENT_ORIGIN=http://localhost:5173
+APP_BASE_URL=http://localhost:5173
+
+MONGODB_URI=your_mongodb_connection_string
+JWT_ACCESS_SECRET=replace_with_strong_random_secret
+JWT_REFRESH_SECRET=replace_with_strong_random_secret
+
+SMTP_HOST=smtp_provider_host
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=smtp_username
+SMTP_PASS=smtp_password
+MAIL_FROM=FleetTrack <no-reply@example.com>
+
+PASSWORD_RESET_OTP_LENGTH=6
+PASSWORD_RESET_OTP_TTL_MINUTES=10
+PASSWORD_RESET_MAX_ATTEMPTS=5
+```
+
+Keep both `.env` files out of version control and rotate any leaked credentials immediately.
 
 Then start the full stack:
 
@@ -167,16 +204,24 @@ Useful scripts:
 
 Frontend:
 
-- `VITE_API_BASE_URL`
-- `VITE_SOCKET_URL`
+- `VITE_API_BASE_URL` - API base URL, defaults to `http://localhost:4000/api`
+- `VITE_SOCKET_URL` - Socket server URL, defaults to API origin when omitted
 
 Backend:
 
-- `PORT`
-- `CLIENT_ORIGIN`
-- `MONGODB_URI`
-- `JWT_ACCESS_SECRET`
-- `JWT_REFRESH_SECRET`
+- `NODE_ENV` - `development` or `production`
+- `PORT` - backend port (default `4000`)
+- `CLIENT_ORIGIN` - allowed frontend origin for CORS
+- `APP_BASE_URL` - frontend base URL used in email links
+- `MONGODB_URI` - required MongoDB connection string
+- `JWT_ACCESS_SECRET` - required secret for access token signing
+- `JWT_REFRESH_SECRET` - required secret for refresh token signing
+- `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `MAIL_FROM` - required for forgot-password OTP emails
+- `PASSWORD_RESET_OTP_LENGTH` - OTP digits (minimum `4`, default `6`)
+- `PASSWORD_RESET_OTP_TTL_MINUTES` - OTP expiry minutes (minimum `5`, default `10`)
+- `PASSWORD_RESET_MAX_ATTEMPTS` - OTP verify attempts before lockout (minimum `1`, default `5`)
+
+If SMTP settings are not configured, forgot-password intentionally returns a `503` configuration error.
 
 ## Why This Project Stands Out
 
