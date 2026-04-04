@@ -9,6 +9,8 @@ import LogoutRoute from './LogoutRoute';
 
 import Login from '../pages/Login';
 import Register from '../pages/Register';
+import ForgotPassword from '../pages/ForgotPassword';
+import ResetPassword from '../pages/ResetPassword';
 import Landing from '../pages/Landing';
 import Dashboard from '../pages/Dashboard';
 import Fleet from '../pages/Fleet';
@@ -63,6 +65,22 @@ export default function AppRoutes() {
             element={
               <GuestOnly>
                 <Register />
+              </GuestOnly>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <GuestOnly>
+                <ForgotPassword />
+              </GuestOnly>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <GuestOnly>
+                <ResetPassword />
               </GuestOnly>
             }
           />

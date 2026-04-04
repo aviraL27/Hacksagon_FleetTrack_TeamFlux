@@ -30,4 +30,18 @@ export async function authRequest(path, { body, method = 'GET' } = {}) {
   return data;
 }
 
+export function requestPasswordResetOtp({ email, tenantSlug }) {
+  return authRequest('/auth/forgot-password', {
+    method: 'POST',
+    body: { email, tenantSlug },
+  });
+}
+
+export function resetPasswordWithOtp({ email, otp, password, tenantSlug }) {
+  return authRequest('/auth/reset-password', {
+    method: 'POST',
+    body: { email, otp, password, tenantSlug },
+  });
+}
+
 export { API_BASE_URL };

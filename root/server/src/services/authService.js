@@ -170,3 +170,21 @@ export async function revokeRefreshSession(token) {
   }
 }
 
+export async function revokeAllRefreshSessionsForUser({ tenantId, userId }) {
+  if (!tenantId || !userId) {
+    return;
+  }
+
+  await RefreshSession.updateMany(
+    {
+      tenantId,
+      userId,
+      revokedAt: null,
+    },
+    {
+      revokedAt: new Date(),
+      lastUsedAt: new Date(),
+    }
+  );
+}
+

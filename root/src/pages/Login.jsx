@@ -407,7 +407,7 @@ export default function Login() {
                     />
                     Keep me signed in for 30 days
                   </label>
-                  <Link className="font-semibold text-[var(--accent)] transition hover:text-[var(--accent-hover)]" to="/">
+                  <Link className="font-semibold text-[var(--accent)] transition hover:text-[var(--accent-hover)]" to="/forgot-password">
                     Forgot password?
                   </Link>
                 </div>

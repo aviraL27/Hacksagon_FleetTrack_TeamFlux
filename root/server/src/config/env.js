@@ -7,12 +7,22 @@ const env = {
   port: Number(process.env.PORT || 4000),
   mongoUri: process.env.MONGODB_URI || '',
   clientOrigin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+  appBaseUrl: process.env.APP_BASE_URL || process.env.CLIENT_ORIGIN || 'http://localhost:5173',
   jwtAccessSecret: process.env.JWT_ACCESS_SECRET || 'fleettrack-access-dev-secret',
   jwtRefreshSecret: process.env.JWT_REFRESH_SECRET || 'fleettrack-refresh-dev-secret',
   accessTokenTtlSeconds: 60 * 15,
   refreshTokenTtlDaysDefault: 7,
   refreshTokenTtlDaysRememberMe: 30,
   refreshCookieName: 'fleettrack_refresh',
+  smtpHost: process.env.SMTP_HOST || '',
+  smtpPort: Number(process.env.SMTP_PORT || 587),
+  smtpSecure: process.env.SMTP_SECURE === 'true',
+  smtpUser: process.env.SMTP_USER || '',
+  smtpPass: process.env.SMTP_PASS || '',
+  mailFrom: process.env.MAIL_FROM || '',
+  passwordResetOtpLength: Math.max(4, Number(process.env.PASSWORD_RESET_OTP_LENGTH || 6)),
+  passwordResetOtpTtlMinutes: Math.max(5, Number(process.env.PASSWORD_RESET_OTP_TTL_MINUTES || 10)),
+  passwordResetMaxAttempts: Math.max(1, Number(process.env.PASSWORD_RESET_MAX_ATTEMPTS || 5)),
 };
 
 env.isProduction = env.nodeEnv === 'production';
