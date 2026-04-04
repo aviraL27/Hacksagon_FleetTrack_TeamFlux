@@ -12,7 +12,7 @@ export default function LogoutRoute() {
 
     logout().finally(() => {
       if (isActive) {
-        navigate('/login', { replace: true });
+        navigate('/', { replace: true });
       }
     });
 
