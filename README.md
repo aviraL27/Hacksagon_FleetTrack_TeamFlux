@@ -101,40 +101,83 @@ sequenceDiagram
 ## Folder Structure
 
 ```text
-fleet_track/
-|-- src/
-|   |-- assets/                 Static demo assets
-|   |-- components/
-|   |   `-- ui/                 Reusable UI building blocks
-|   |-- constants/              Shared frontend constants
-|   |-- context/                Theme and app-level providers
-|   |-- hooks/                  Reusable frontend hooks
-|   |-- layouts/                Auth and dashboard layout shells
-|   |-- pages/                  Dashboard, Fleet, Drivers, Orders, Tracking, Maintenance, Settings
-|   |-- routes/                 Route config and protected route logic
-|   |-- services/               API client, auth client, socket connector
-|   |-- store/                  Zustand stores and seeded demo data
-|   |-- utils/                  Client helpers
-|   |-- App.jsx                 Root app wrapper
-|   `-- main.jsx                Frontend entry point
-|-- server/
-|   |-- src/
-|   |   |-- config/             Environment configuration
-|   |   |-- db/                 MongoDB connection setup
-|   |   |-- middleware/         Auth and role guards
-|   |   |-- models/             Mongoose schemas
-|   |   |-- routes/             Auth, dashboard, fleet, driver, order, maintenance, settings APIs
-|   |   |-- services/           Auth, order logic, sockets, seed, serializers, activity logs
-|   |   |-- utils/              Backend helpers
-|   |   |-- app.js              Express app wiring
-|   |   `-- index.js            HTTP server + Socket.IO bootstrap
-|   |-- .env.example
-|   `-- package.json
-|-- scripts/
-|   `-- dev.mjs                 Runs client and server together in development
-|-- .env.example                Frontend environment template
-|-- package.json                Frontend package manifest
-`-- README.md
+Hacksagon_FleetTrack_TeamFlux/
+|-- README.md
+|-- package-lock.json
+`-- root/
+|   |-- .env
+|   |-- .gitignore
+|   |-- index.html
+|   |-- netlify.toml
+|   |-- package.json
+|   |-- postcss.config.js
+|   |-- tailwind.config.js
+|   |-- vite.config.js
+|   |-- scripts/
+|   |   `-- dev.mjs
+|   |-- server/
+|   |   |-- .env
+|   |   |-- package.json
+|   |   `-- src/
+|   |       |-- app.js
+|   |       |-- index.js
+|   |       |-- config/
+|   |       |   `-- env.js
+|   |       |-- db/
+|   |       |   `-- connect.js
+|   |       |-- middleware/
+|   |       |   `-- auth.js
+|   |       |-- models/
+|   |       |   |-- ActivityLog.js
+|   |       |   |-- Driver.js
+|   |       |   |-- MaintenanceAlert.js
+|   |       |   |-- MaintenanceEntry.js
+|   |       |   |-- Order.js
+|   |       |   |-- PasswordResetOtp.js
+|   |       |   |-- RefreshSession.js
+|   |       |   |-- Tenant.js
+|   |       |   |-- User.js
+|   |       |   `-- Vehicle.js
+|   |       |-- routes/
+|   |       |-- services/
+|   |       |   |-- activityService.js
+|   |       |   |-- authService.js
+|   |       |   |-- mailService.js
+|   |       |   |-- orderService.js
+|   |       |   |-- seedService.js
+|   |       |   |-- serializers.js
+|   |       |   `-- socketService.js
+|   |       `-- utils/
+|   `-- src/
+|       |-- App.jsx
+|       |-- index.css
+|       |-- main.jsx
+|       |-- assets/
+|       |-- components/
+|       |   |-- landing/
+|       |   `-- ui/
+|       |-- constants/
+|       |-- context/
+|       |-- data/
+|       |-- hooks/
+|       |-- layouts/
+|       |-- pages/
+|       |   |-- Dashboard.jsx
+|       |   |-- Drivers.jsx
+|       |   |-- Fleet.jsx
+|       |   |-- ForgotPassword.jsx
+|       |   |-- Landing.jsx
+|       |   |-- LiveTracking.jsx
+|       |   |-- Login.jsx
+|       |   |-- Maintenance.jsx
+|       |   |-- Orders.jsx
+|       |   |-- Register.jsx
+|       |   |-- ResetPassword.jsx
+|       |   `-- Settings.jsx
+|       |-- routes/
+|       |-- services/
+|       |-- store/
+|       `-- utils/
 ```
 
 ## Local Setup
